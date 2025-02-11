@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   button: {
-    backgroundColor: '#F1DE3C', // Gold color
+    backgroundColor: '#D8B872', // Gold color
     padding: 15,
     borderRadius: 50,
     marginHorizontal: 100,

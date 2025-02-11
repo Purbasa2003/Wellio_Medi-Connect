@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#3bc49f', // Gold color
+    backgroundColor: '#D8B872', // Gold color
     padding: 15,
     marginHorizontal: 100,
     borderRadius: 50,
