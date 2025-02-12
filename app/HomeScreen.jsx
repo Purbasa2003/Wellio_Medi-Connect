@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     color: "#000",
     marginBottom: 30,
     position: "absolute",
-    top: 15,
+    top: 55,
   },
   welcomeCard: {
     width: "90%",
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     padding: 25,
     alignItems: "center",
     marginBottom: 20,
-    marginTop: 60,
+    marginTop: 100,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   logout: {
     fontSize: 18,
     color: "gray",
-    marginTop: 10,
+    marginTop: 50,
     marginBottom: 20,
   },
 });

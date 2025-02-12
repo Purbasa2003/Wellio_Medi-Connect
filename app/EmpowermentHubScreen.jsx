@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 5,
-    marginTop: 10,
+    marginBottom: 20,
+    marginTop: 60,
     color: '#5A3A8E',
   },
   logo: {
-    width: 170,
-    height: 170,
+    width: 190,
+    height: 190,
     alignSelf: 'center',
     marginBottom: 10,
   },
@@ -132,12 +132,12 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginBottom: 15,
-    marginTop: 10,
+    marginTop: 20,
   },
   sectionButton: {
     padding: 14,
     borderRadius: 20,
-    marginBottom: 10,
+    marginBottom: 12,
     marginHorizontal: 20,
   },
   sectionText: {

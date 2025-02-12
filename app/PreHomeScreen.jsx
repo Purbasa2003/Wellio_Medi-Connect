@@ -356,7 +356,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
+    marginTop: 40,
     textAlign: 'center',
   },
   progressBarContainer: {
@@ -374,17 +375,18 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: '#666',
-    marginBottom: 20,
+    marginBottom: 30,
     textAlign: 'center',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 30,
+    marginTop: 20,
     textAlign: 'center',
   },
   question: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   input: {
     height: 50,
@@ -393,6 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 15,
     marginBottom: 15,
+    maarginTop: 20,
   },
   picker: {
     height: 50,
