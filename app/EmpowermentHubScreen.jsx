@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
+
+const logo = require('../assets/EmpowerHub.png'); // Adjust the path to your logo image
 
 const healthSections = [
   {
     section: 'Blossom Cycle Care',
+    color: '#D4B200',
+    textColor: '#BFA0D9',
     tips: [
       { title: 'Hygiene First', content: 'Change pads or tampons every 4-6 hours. Use breathable cotton underwear.' },
       { title: 'Stay Hydrated', content: 'Drink plenty of water to stay hydrated and support overall health.' },
@@ -12,6 +16,8 @@ const healthSections = [
   },
   {
     section: 'Motherhood Wellness',
+    color: '#5A3A8E',
+    textColor: '#FFF3A4',
     tips: [
       { title: 'Nutritional Boost', content: 'Eat a balanced diet rich in folic acid, iron, and calcium.' },
       { title: 'Gentle Movements', content: 'Engage in moderate physical activity to maintain a healthy pregnancy.' },
@@ -19,6 +25,8 @@ const healthSections = [
   },
   {
     section: 'Mind & Mood Harmony',
+    color: '#D4B200',
+    textColor: '#BFA0D9',
     tips: [
       { title: 'Stress-Free Living', content: 'Practice mindfulness and relaxation techniques to reduce stress.' },
       { title: 'Restorative Sleep', content: 'Ensure 7-9 hours of sleep to maintain mental well-being.' },
@@ -26,6 +34,8 @@ const healthSections = [
   },
   {
     section: 'Golden Grace (Menopause Care)',
+    color: '#5A3A8E',
+    textColor: '#FFF3A4',
     tips: [
       { title: 'Balanced Diet', content: 'Include calcium and vitamin D-rich foods to support bone health.' },
       { title: 'Stay Active', content: 'Regular exercise helps manage symptoms and maintain mobility.' },
@@ -33,6 +43,8 @@ const healthSections = [
   },
   {
     section: 'Vital Curves (Breast Health)',
+    color: '#D4B200',
+    textColor: '#BFA0D9',
     tips: [
       { title: 'Self-Check Routine', content: 'Perform regular self-exams to detect any unusual changes early.' },
       { title: 'Healthy Lifestyle', content: 'Maintain a balanced diet and exercise to support breast health.' },
@@ -40,6 +52,8 @@ const healthSections = [
   },
   {
     section: 'Hormonal Balance (PCOS Care)',
+    color: '#5A3A8E',
+    textColor: '#FFF3A4',
     tips: [
       { title: 'Healthy Eating', content: 'Opt for whole foods and reduce processed sugar intake to balance hormones.' },
       { title: 'Stress Management', content: 'Practice yoga and meditation to regulate hormonal fluctuations.' },
@@ -52,14 +66,18 @@ const HealthTipsScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Stay Informed, Stay Healthy</Text>
-      
+      <Text style={styles.header}>Empowerment Hub</Text>
+      <Image source={logo} style={styles.logo} />
+      <Text style={styles.quote}>
+        "She who learns, lifts the world."
+      </Text>
+
       {!selectedSection ? (
         <View style={styles.sectionContainer}>
           {healthSections.map((section, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.sectionButton, { backgroundColor: index % 2 === 0 ? '#FF6F61' : '#6A0572' }]}
+              style={[styles.sectionButton, { backgroundColor: section.color }]}
               onPress={() => setSelectedSection(section)}
             >
               <Text style={styles.sectionText}>{section.section}</Text>
@@ -72,7 +90,7 @@ const HealthTipsScreen = () => {
             <Text style={styles.backButtonText}>⬅ Back</Text>
           </TouchableOpacity>
           {selectedSection.tips.map((tip, index) => (
-            <Card key={index} style={styles.card}>
+            <Card key={index} style={[styles.card, { backgroundColor: selectedSection.textColor }]}> 
               <Card.Content>
                 <Title style={styles.title}>{tip.title}</Title>
                 <Paragraph>{tip.content}</Paragraph>
@@ -88,24 +106,39 @@ const HealthTipsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF3F0',
+    backgroundColor: 'white',
     padding: 10,
   },
   header: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginBottom: 5,
+    marginTop: 10,
+    color: '#5A3A8E',
+  },
+  logo: {
+    width: 170,
+    height: 170,
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+  quote: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    textAlign: 'center',
     marginBottom: 20,
-    color: '#6A0572',
+    color: '#5A3A8E',
   },
   sectionContainer: {
     marginBottom: 15,
-    marginTop: 40,
+    marginTop: 10,
   },
   sectionButton: {
     padding: 14,
-    borderRadius: 8,
+    borderRadius: 20,
     marginBottom: 10,
+    marginHorizontal: 20,
   },
   sectionText: {
     fontSize: 18,
@@ -114,7 +147,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   backButton: {
-    backgroundColor: '#6A0572',
+    backgroundColor: '#5A3A8E',
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,
@@ -127,9 +160,9 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 10,
-    backgroundColor: '#FFFFFF',
+    marginHorizontal: 20,
     borderRadius: 10,
-    padding: 12,
+    padding: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -139,7 +172,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FF6F61',
+    color: 'black',
   },
 });
 
