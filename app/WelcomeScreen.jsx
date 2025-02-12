@@ -48,6 +48,10 @@ const styles = StyleSheet.create({
   image: {
     width: 250,
     height: 250,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 15,
   },
   subtitle: {
     fontFamily: 'Reenie Beanie',
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     opacity: 40,
     width: '80%',
     alignItems: 'center',
+    elevation: 5,
   },
   buttonText: {
     fontFamily: 'Sono',

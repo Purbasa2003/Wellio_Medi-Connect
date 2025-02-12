@@ -83,6 +83,9 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginBottom: 15,
     alignItems: 'center',
+    shadowColor: "#000",
+    shadowOpacity: 0.5,
+    elevation: 15,
   },
   hint: {
     fontSize: 12,
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 100,
     width: '100%',
     alignItems: 'center',
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    elevation: 5,
   },
   buttonText: {
     color: 'white',

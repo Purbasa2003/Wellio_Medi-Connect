@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginBottom: 15,
     alignItems: 'center',
+    elevation: 5,
   },
   button: {
     backgroundColor: '#D8B872', // Gold color
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: '100%',
     alignItems: 'center',
+    elevation: 5,
   },
   buttonText: {
     color: 'white',
