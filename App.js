@@ -6,12 +6,10 @@ import CreateAccountScreen from './app/CreateAccountScreen';
 import LoginScreen from './app/LoginScreen';
 import HomeScreen from './app/HomeScreen';
 import PreHomeScreen from './app/PreHomeScreen';
-import HealthTrackingScreen from './app/HealthTrackingScreen';
-import RecommendationsScreen from './app/RecommendationsScreen';
+import VitalViewScreen from './app/VitalViewScreen';
+import GoalsScreen from './app/GoalsScreen';
 import EmpowermentHubScreen from './app/EmpowermentHubScreen';
-import TelehealthScreen from './app/TelehealthScreen';
-import ProfileScreen from './app/ProfileScreen';
-import SettingsScreen from './app/SettingsScreen';
+import CommunityConnectScreen from './app/CommunityConnectScreen';
 
 const Stack = createStackNavigator();
 
@@ -24,12 +22,11 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="PreHome" component={PreHomeScreen} />
-        <Stack.Screen name="HealthTracking" component={HealthTrackingScreen} />
-        <Stack.Screen name="Recommendations" component={RecommendationsScreen} />
+        <Stack.Screen name="VitalView" component={VitalViewScreen} />
+        <Stack.Screen name="Goals" component={GoalsScreen} />
         <Stack.Screen name="EmpowermentHub" component={EmpowermentHubScreen} />
-        <Stack.Screen name="Telehealth" component={TelehealthScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="CommunityConnect" component={CommunityConnectScreen} />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
