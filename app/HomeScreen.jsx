@@ -61,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.userInfo}>Mood Swings: {userData.moodSwings}</Text>
 
               {/* Edit Button (Only in Details View) */}
-              <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate("PreHomeScreen")}>
+              <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate("PreHome")}>
                 <Text style={styles.editText}>Edit</Text>
               </TouchableOpacity>
             </>
