@@ -14,8 +14,28 @@ const goalOptions = [
   { id: '6', title: 'Stress Management' },
 ];
 
-const GoalCard = ({ goal, onEdit, onDelete }) => {
-  const { id, title, progress, timeline, timelineUnit, startDate, selectedTopic } = goal;
+const GoalCard = ({ goal, onEdit, onDelete, onComplete }) => {
+  const { id, title, timeline, timelineUnit, startDate, selectedTopic, completed } = goal;
+  const [currentProgress, setCurrentProgress] = useState(0);
+
+  useEffect(() => {
+    let timer;
+    if (!completed) {
+      timer = setInterval(() => {
+        const progress = calculateProgress();
+        setCurrentProgress(progress);
+        
+        if (progress >= 1 && !completed) {
+          onComplete(id);
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [completed]);
 
   const calculateProgress = () => {
     if (!startDate || !timeline) return 0;
@@ -33,6 +53,9 @@ const GoalCard = ({ goal, onEdit, onDelete }) => {
       case 'minutes':
         end = new Date(start.getTime() + timeline * 60 * 1000);
         break;
+      case 'seconds':
+        end = new Date(start.getTime() + timeline * 1000);
+        break;
       default:
         return 0;
     }
@@ -42,10 +65,8 @@ const GoalCard = ({ goal, onEdit, onDelete }) => {
     return Math.min(elapsed / totalDuration, 1);
   };
 
-  const currentProgress = calculateProgress();
-
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, completed && styles.completedCard]}>
       <View style={styles.cardHeader}>
         <Text style={styles.cardTitle}>{title}</Text>
         <TouchableOpacity onPress={() => onDelete(id)}>
@@ -53,12 +74,20 @@ const GoalCard = ({ goal, onEdit, onDelete }) => {
         </TouchableOpacity>
       </View>
       <Text style={styles.topicText}>Topic: {selectedTopic}</Text>
-      <ProgressBar progress={currentProgress} color="#6a5acd" style={styles.progressBar} />
-      <Text style={styles.progressText}>{Math.round(currentProgress * 100)}% Complete</Text>
+      <ProgressBar 
+        progress={completed ? 1 : currentProgress} 
+        color={completed ? "#4CAF50" : "#6a5acd"} 
+        style={styles.progressBar} 
+      />
+      <Text style={styles.progressText}>
+        {completed ? "Completed!" : `${Math.round(currentProgress * 100)}% Complete`}
+      </Text>
       <Text style={styles.timelineText}>Timeline: {timeline} {timelineUnit}</Text>
-      <TouchableOpacity onPress={() => onEdit(goal)} style={styles.editButton}>
-        <Text style={styles.editText}>Edit Goal</Text>
-      </TouchableOpacity>
+      {!completed && (
+        <TouchableOpacity onPress={() => onEdit(goal)} style={styles.editButton}>
+          <Text style={styles.editText}>Edit Goal</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -73,49 +102,29 @@ const GoalsTrackerScreen = () => {
   const [editingGoal, setEditingGoal] = useState(null);
   const [goalTitle, setGoalTitle] = useState('');
   const [goalTimeline, setGoalTimeline] = useState('');
-  const [timelineUnit, setTimelineUnit] = useState('days');
+  const [timelineUnit, setTimelineUnit] = useState('seconds');
   const [selectedTopic, setSelectedTopic] = useState('');
+  const [completingGoalId, setCompletingGoalId] = useState(null);
 
-  useEffect(() => {
-    goals.forEach((goal) => {
-      const progress = calculateProgress(goal);
-      if (progress >= 1 && !goal.completed) {
-        setShowCheersAnimation(true);
-        setTimeout(() => {
-          setShowCheersAnimation(false);
-          setGoals((prevGoals) =>
-            prevGoals.map((g) =>
-              g.id === goal.id ? { ...g, completed: true } : g
-            )
-          );
-        }, 4000);
-      }
-    });
-  }, [goals]);
+  const handleGoalComplete = (goalId) => {
+    // Prevent multiple completions of the same goal
+    if (completingGoalId === goalId) return;
+    
+    setCompletingGoalId(goalId);
+    setShowCheersAnimation(true);
+    
+    // Update the goal's completed status
+    setGoals(prevGoals =>
+      prevGoals.map(g =>
+        g.id === goalId ? { ...g, completed: true } : g
+      )
+    );
 
-  const calculateProgress = (goal) => {
-    if (!goal.startDate || !goal.timeline) return 0;
-    const now = new Date();
-    const start = new Date(goal.startDate);
-    let end;
-
-    switch (goal.timelineUnit) {
-      case 'days':
-        end = new Date(start.getTime() + goal.timeline * 24 * 60 * 60 * 1000);
-        break;
-      case 'months':
-        end = new Date(start.setMonth(start.getMonth() + goal.timeline));
-        break;
-      case 'minutes':
-        end = new Date(start.getTime() + goal.timeline * 60 * 1000);
-        break;
-      default:
-        return 0;
-    }
-
-    const totalDuration = end - start;
-    const elapsed = now - start;
-    return Math.min(elapsed / totalDuration, 1);
+    // Hide the animation after delay
+    setTimeout(() => {
+      setShowCheersAnimation(false);
+      setCompletingGoalId(null);
+    }, 3000);
   };
 
   const handleSetGoal = () => {
@@ -136,10 +145,24 @@ const GoalsTrackerScreen = () => {
     setShowGoalModal(false);
     setShowCelebration(true);
     setTimeout(() => setShowCelebration(false), 3000);
+    handleCompleteGoal();
+    resetForm();
+  };
+  const handleCompleteGoal = () => {
+    setShowDoneAnimation(true);
+    setTimeout(() => {
+      setShowDoneAnimation(false);
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3000);
+    }, 3000);
+  };
+
+  const resetForm = () => {
     setGoalTitle('');
     setGoalTimeline('');
-    setTimelineUnit('days');
+    setTimelineUnit('seconds');
     setSelectedTopic('');
+    setEditingGoal(null);
   };
 
   const handleEditGoal = (goal) => {
@@ -156,17 +179,21 @@ const GoalsTrackerScreen = () => {
 
     const updatedGoals = goals.map((goal) =>
       goal.id === editingGoal.id
-        ? { ...goal, title: goalTitle, timeline: parseInt(goalTimeline, 10), timelineUnit, selectedTopic }
+        ? {
+            ...goal,
+            title: goalTitle,
+            timeline: parseInt(goalTimeline, 10),
+            timelineUnit,
+            selectedTopic,
+            startDate: new Date().toISOString(),
+            completed: false
+          }
         : goal
     );
 
     setGoals(updatedGoals);
     setShowGoalModal(false);
-    setEditingGoal(null);
-    setGoalTitle('');
-    setGoalTimeline('');
-    setTimelineUnit('days');
-    setSelectedTopic('');
+    resetForm();
   };
 
   const handleDeleteGoal = (id) => {
@@ -178,15 +205,6 @@ const GoalsTrackerScreen = () => {
         { text: 'Yes', onPress: () => setGoals(goals.filter((goal) => goal.id !== id)) },
       ]
     );
-  };
-
-  const handleCompleteGoal = () => {
-    setShowDoneAnimation(true);
-    setTimeout(() => {
-      setShowDoneAnimation(false);
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 3000);
-    }, 3000);
   };
 
   return (
@@ -206,21 +224,21 @@ const GoalsTrackerScreen = () => {
             goal={goal}
             onEdit={handleEditGoal}
             onDelete={handleDeleteGoal}
+            onComplete={handleGoalComplete}
           />
         ))
       )}
-
       {/* Done Animation */}
-      {showDoneAnimation && (
-        <View style={styles.doneAnimationContainer}>
-          <LottieView
-            source={require('../assets/DoneAnimation.json')}
-            autoPlay
-            loop={false}
-            style={styles.doneAnimation}
-          />
-        </View>
-      )}
+{showDoneAnimation && (
+  <View style={styles.doneAnimationContainer}>
+    <LottieView
+      source={require('../assets/DoneAnimation.json')}
+      autoPlay
+      loop={false}
+      style={styles.doneAnimation}
+    />
+  </View>
+)}
 
       {/* Celebration Animation */}
       {showCelebration && (
@@ -243,8 +261,9 @@ const GoalsTrackerScreen = () => {
             autoPlay
             loop={false}
             style={styles.cheersAnimation}
+            onAnimationFinish={() => setShowCheersAnimation(false)}
           />
-          <Text style={styles.cheersText}>Hurray! Your Goal is complete!</Text>
+          <Text style={styles.cheersText}>Congratulations! Goal Complete! 🎉</Text>
         </View>
       )}
 
@@ -295,18 +314,21 @@ const GoalsTrackerScreen = () => {
               selectedValue={timelineUnit}
               style={styles.picker}
               onValueChange={(itemValue) => setTimelineUnit(itemValue)}>
+              <Picker.Item label="Seconds" value="seconds" />
+              <Picker.Item label="Minutes" value="minutes" />
               <Picker.Item label="Days" value="days" />
               <Picker.Item label="Months" value="months" />
-              <Picker.Item label="Minutes" value="minutes" />
-              <Picker.Item label="Seconds" value="seconds" />
             </Picker>
             <TouchableOpacity
-              onPress={editingGoal ? handleUpdateGoal : () => { handleSetGoal(); handleCompleteGoal(); }}
+              onPress={editingGoal ? handleUpdateGoal : handleSetGoal}
               style={styles.modalButton}
             >
               <Text style={styles.modalButtonText}>{editingGoal ? 'Update Goal' : 'Set Goal'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowGoalModal(false)} style={styles.closeModal}>
+            <TouchableOpacity onPress={() => {
+              setShowGoalModal(false);
+              resetForm();
+            }} style={styles.closeModal}>
               <Text style={styles.closeModalText}>Cancel</Text>
             </TouchableOpacity>
           </View>
@@ -315,6 +337,7 @@ const GoalsTrackerScreen = () => {
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -520,6 +543,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 8,
     backgroundColor: '#f5f5f5',
+  },
+  completedCard: {
+    backgroundColor: '#E8F5E9', // Light green background for completed goals
+    opacity: 0.9,
   },
 });
 
