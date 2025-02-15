@@ -292,6 +292,124 @@ const PreHomeScreen = ({ navigation }) => {
             />
           </>
         );
+        case 5:
+  return (
+    <>
+      <Text style={styles.sectionTitle}>Hydration & Sleep</Text>
+      
+      <Controller
+        control={control}
+        name="waterIntake"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.question}>
+            <Text>1. How many glasses of water do you drink daily?</Text>
+            <Picker
+              selectedValue={value}
+              onValueChange={onChange}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Less than 4 glasses" value="Less than 4 glasses" />
+              <Picker.Item label="4-6 glasses" value="4-6 glasses" />
+              <Picker.Item label="7-8 glasses" value="7-8 glasses" />
+              <Picker.Item label="More than 8 glasses" value="More than 8 glasses" />
+            </Picker>
+          </View>
+        )}
+      />
+      
+      <Controller
+        control={control}
+        name="sleepHours"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.question}>
+            <Text>2. How many hours of sleep do you get on average per night?</Text>
+            <Picker
+              selectedValue={value}
+              onValueChange={onChange}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Less than 5 hours" value="Less than 5 hours" />
+              <Picker.Item label="5-6 hours" value="5-6 hours" />
+              <Picker.Item label="7-8 hours" value="7-8 hours" />
+              <Picker.Item label="More than 8 hours" value="More than 8 hours" />
+            </Picker>
+          </View>
+        )}
+      />
+       <Controller
+        control={control}
+        name="sleepQuality"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.question}>
+            <Text>2. How would you rate the quality of your sleep?</Text>
+            <Picker
+              selectedValue={value}
+              onValueChange={onChange}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Poor" value="Poor" />
+              <Picker.Item label="Fair" value="Fair" />
+              <Picker.Item label="Good" value="Good" />
+              <Picker.Item label="Excellent" value="Excellent" />
+            </Picker>
+          </View>
+        )}
+      />
+    </>
+  );
+  case 6:
+  return (
+    <>
+      <Text style={styles.sectionTitle}>Diet and Nutrition</Text>
+      
+      <Controller
+        control={control}
+        name="dietType"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.question}>
+            <Text>1. How would you describe your diet?</Text>
+            <Picker
+              selectedValue={value}
+              onValueChange={onChange}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Balanced" value="Balanced" />
+              <Picker.Item label="Vegetarian" value="Vegetarian" />
+              <Picker.Item label="Vegan" value="Vegan" />
+              <Picker.Item label="High-protein" value="High-protein" />
+              <Picker.Item label="High-carb" value="High-carb" />
+              <Picker.Item label="Other" value="Other" />
+            </Picker>
+          </View>
+        )}
+      />
+      
+      <Controller
+        control={control}
+        name="fruitVeggieIntake"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.question}>
+            <Text>2. How often do you consume fruits and vegetables?</Text>
+            <Picker
+              selectedValue={value}
+              onValueChange={onChange}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Rarely" value="Rarely" />
+              <Picker.Item label="1-2 times a day" value="1-2 times a day" />
+              <Picker.Item label="3-4 times a day" value="3-4 times a day" />
+              <Picker.Item label="With every meal" value="With every meal" />
+            </Picker>
+          </View>
+        )}
+      />
+    </>
+  );
       default:
         return null;
     }
@@ -302,7 +420,7 @@ const PreHomeScreen = ({ navigation }) => {
       <Text style={styles.title}>FemBio: User Health Data Input</Text>
      
       <View style={styles.progressBarContainer}>
-  <View style={[styles.progressBar, { width: `${(step / 4) * 100}%` }]} />
+  <View style={[styles.progressBar, { width: `${(step / 6) * 100}%` }]} />
 </View>
 
       {renderStep()}
@@ -325,7 +443,7 @@ const PreHomeScreen = ({ navigation }) => {
                 <Text style={styles.buttonText}>Previous</Text>
               </TouchableOpacity>
             )}
-            {step < 4 ? (
+            {step < 6 ? (
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => setStep(step + 1)}
