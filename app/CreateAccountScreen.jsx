@@ -1,20 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { registerUser } from '../api'; 
 
 const CreateAccountScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [dob, setDob] = useState('');
   const [phone, setPhone] = useState('');
 
-  const handleSignUp = () => {
-    // Handle sign-up logic here
-    console.log('User Details:', { username, dob, phone });
-    navigation.navigate('PreHome');
+  const handleSignUp = async () => {
+    try {
+      // Prepare user data
+      const userData = {
+        name: username,
+        dateOfBirth: dob,
+        phoneNumber: phone,
+      };
+
+      // Call the registerUser API
+      const response = await registerUser(userData);
+
+      // Handle successful registration
+      console.log('User registered successfully:', response);
+      Alert.alert('Success', 'User registered successfully!');
+
+      // Navigate to the next screen (PreHome)
+      navigation.navigate('PreHome');
+    } catch (error) {
+      // Handle errors
+      console.error('Error registering user:', error);
+      Alert.alert('Error', 'Failed to register user. Please try again.');
+    }
   };
 
   return (
     <View style={styles.container}>
-       <Text style={styles.title}>WELLiO</Text>
+      <Text style={styles.title}>WELLiO</Text>
       <Image
         source={require('../assets/Wellio_Logo_withbg.png')} // Update with your image
         style={styles.image}
@@ -30,7 +50,7 @@ const CreateAccountScreen = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Date of birth"
+        placeholder="Date of birth (DD-MM-YYYY)"
         value={dob}
         onChangeText={setDob}
       />
@@ -41,10 +61,7 @@ const CreateAccountScreen = ({ navigation }) => {
         onChangeText={setPhone}
         keyboardType="phone-pad"
       />
-      <TouchableOpacity 
-      style={styles.button} 
-      onPress={handleSignUp}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
