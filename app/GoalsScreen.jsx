@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Modal, TextInput, Alert } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Picker } from '@react-native-picker/picker';
+
+const logo = require('../assets/Goals.png');
 
 const goalOptions = [
   { id: '1', title: 'Body Detox' },
@@ -210,10 +212,12 @@ const GoalsTrackerScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Your Goals, Your Journey</Text>
+      
+      <Image source={logo} style={styles.logo} />
 
       <TouchableOpacity onPress={() => setShowTopicModal(true)} style={styles.setGoalButton}>
         <Text style={styles.setGoalText}>Set a New Goal</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>   
 
       {goals.length === 0 ? (
         <Text style={styles.noGoalsText}>No goals set yet. Start your journey now!</Text>
@@ -365,6 +369,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  logo: {
+    width: 190,
+    height: 190,
+    alignSelf: 'center',
+    marginBottom: 10,
   },
   noGoalsText: {
     textAlign: 'center',
