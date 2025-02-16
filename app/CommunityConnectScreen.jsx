@@ -11,7 +11,7 @@ import {
   Modal,
   Pressable,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';                                                                                                                                                              
 
 // Dummy data for demonstration
 const users = [
@@ -111,8 +111,11 @@ const CommunityConnectScreen = () => {
       ]}
       onPress={() => setSelectedCategory(item)}
     >
-      <Icon name={item.icon} size={24} color="#6a5acd" />
-      <Text style={styles.categoryText}>{item.title}</Text>
+      <Icon name={item.icon} size={24} color={selectedCategory?.id === item.id ? "#fff" : "#6a5acd"} />
+      <Text style={[
+      styles.categoryText,
+      selectedCategory?.id === item.id && styles.selectedCategoryText,
+    ]}>{item.title}</Text>
     </TouchableOpacity>
   );
 
@@ -162,6 +165,7 @@ const CommunityConnectScreen = () => {
       </View>
 
       {/* Categories */}
+      <View style={styles.topContent}>
       <Text style={styles.sectionTitle}>Categories</Text>
       <FlatList
         data={categories}
@@ -171,8 +175,10 @@ const CommunityConnectScreen = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.categoryList}
       />
+      </View>
 
       {/* Posts */}
+      <View style={styles.discussionContainer}>
       <Text style={styles.sectionTitle}>Recent Discussions</Text>
       <FlatList
         data={filteredPosts}
@@ -180,6 +186,7 @@ const CommunityConnectScreen = () => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       />
+      </View>
 
       {/* Create Post Button */}
       <TouchableOpacity
@@ -266,6 +273,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 16,
   },
+  topContent: {
+    // This will contain the categories section
+    marginBottom: 10,
+  },
+  discussionContainer: {
+    flex: 1, // This will make it take the remaining space
+  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -319,9 +333,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 3,
+    width: 90,  // Fixed width ensures consistency
+    height: 100, // Fixed height ensures consistency
   },
   selectedCategoryItem: {
     backgroundColor: '#6a5acd',
+    
   },
   categoryText: {
     fontSize: 14,
